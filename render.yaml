@@ -1,0 +1,10 @@
+# Déploiement sur Render (render.com) : « New + » → « Blueprint » → choisir ce dépôt.
+services:
+  - type: web
+    name: table-de-tarot
+    runtime: node
+    plan: free
+    buildCommand: node build.mjs
+    startCommand: node server/server.mjs
+    healthCheckPath: /health
+    autoDeploy: true

@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="format-detection" content="telephone=no">
+<meta name="theme-color" content="#0b1412">
+<!-- build:head -->
+<title>Table de Tarot</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500;6..96,700&family=Karla:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="css/styles.css">
+<!-- /build:head -->
+</head>
+<body>
+<!-- build:body -->
+<div id="app">
+  <section class="setup" id="setup">
+    <div class="welcome">
+      <header class="w-head">
+        <div>
+          <div class="eyebrow">78 cartes · règles de la FFT</div>
+          <h1>Le <em>Tarot</em></h1>
+          <p class="lede">Une partie de 3 à 5 joueurs. L'ordinateur prend les places libres.</p>
+        </div>
+        <div class="fan-deco" aria-hidden="true">
+          <div class="card trump oud"><span class="ix">21</span><span class="mid"><b>21</b></span><span class="sheen"></span></div>
+          <div class="card excuse"><span class="ix">★</span><span class="mid">★</span><span class="cap">EXCUSE</span><span class="sheen"></span></div>
+          <div class="card trump oud"><span class="ix">1</span><span class="mid"><b>1</b></span><span class="sheen"></span></div>
+        </div>
+      </header>
+
+      <div class="resume" id="resumeBox" hidden></div>
+
+      <div class="w-grid">
+        <div class="w-steps">
+          <section class="step">
+            <span class="stepno">1</span>
+            <h2 id="lh">Joueurs devant l'écran</h2>
+            <div class="seg" role="group" aria-labelledby="lh" id="segH">
+              <button type="button" data-h="1" aria-pressed="true">1</button>
+              <button type="button" data-h="2" aria-pressed="false">2</button>
+            </div>
+          </section>
+          <section class="step">
+            <span class="stepno">2</span>
+            <h2 id="ln">Joueurs à la table</h2>
+            <div class="seg" role="group" aria-labelledby="ln" id="segN">
+              <button type="button" data-n="3" aria-pressed="false">3</button>
+              <button type="button" data-n="4" aria-pressed="true">4</button>
+              <button type="button" data-n="5" aria-pressed="false">5</button>
+            </div>
+          </section>
+          <section class="step">
+            <span class="stepno">3</span>
+            <h2 id="ll">Niveau de l'ordinateur</h2>
+            <div class="seg words" role="group" aria-labelledby="ll" id="segL">
+              <button type="button" data-l="weak" aria-pressed="false">Faible</button>
+              <button type="button" data-l="mid" aria-pressed="true">Intermédiaire</button>
+              <button type="button" data-l="expert" aria-pressed="false">Expert</button>
+            </div>
+            <p class="hint" id="levelHint">Joue proprement : charge son partenaire, protège le Petit.</p>
+          </section>
+          <section class="step">
+            <span class="stepno">4</span>
+            <h2>Prénom et avatar</h2>
+            <div id="who" class="who"></div>
+          </section>
+        </div>
+
+        <aside class="w-preview" aria-label="Votre table">
+          <div class="eyebrow">Votre table</div>
+          <div class="minitable" id="minitable"></div>
+          <p class="summary" id="summary">1 joueur et 3 places pour l'ordinateur.</p>
+          <label class="musicpick" for="music"><span>♪ Musique</span>
+            <select id="music" class="sel"><option value="western">Western</option><option value="bach">Classique : Bach, Prélude en do</option><option value="pachelbel">Classique : Canon de Pachelbel</option><option value="pop">Pop</option><option value="off">Sans musique</option></select></label>
+          <button class="btn primary go" id="start" type="button">Couper et distribuer</button>
+          <div class="online-box">
+            <span class="ql">Jouer en ligne</span>
+            <button class="btn" data-act="online-create" type="button">Créer une table</button>
+            <div class="join-row"><input id="joinCode" maxlength="4" size="4" placeholder="CODE" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label="Code de la table à rejoindre"><button class="btn" data-act="online-join" type="button">Rejoindre</button></div>
+            <p class="hint" id="onlineHint"></p>
+          </div>
+          <div class="install-box" id="installBox" hidden></div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <main id="game" hidden>
+    <aside class="panel" id="panelL" aria-label="Joueur 1"></aside>
+    <section class="center" id="center"></section>
+    <aside class="panel" id="panelR" aria-label="Joueur 2"></aside>
+  </main>
+</div>
+
+<script src="assets/music.js"></script>
+<script src="js/cards.js"></script>
+<script src="js/rules.js"></script>
+<script src="js/ai.js"></script>
+<script src="js/avatars.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/anim.js"></script>
+<script src="js/save.js"></script>
+<script src="js/online.js"></script>
+<script src="js/game.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/pwa.js"></script>
+<!-- /build:body -->
+</body>
+</html>

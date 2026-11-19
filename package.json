@@ -1,0 +1,17 @@
+{
+  "name": "table-de-tarot",
+  "version": "1.0.0",
+  "description": "Jeu de tarot de 3 à 5 joueurs : contre l'ordinateur, à deux sur un écran ou en ligne ; installable comme application.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "npx --yes http-server . -p 5173 -c-1 -o",
+    "build": "node build.mjs",
+    "preview": "npx --yes http-server dist -p 4173 -c-1 -o /tarot.html",
+    "test": "node test/simulate.mjs",
+    "start": "node server/server.mjs",
+    "serve": "node build.mjs && node server/server.mjs"
+  },
+  "engines": { "node": ">=18" },
+  "license": "UNLICENSED"
+}
