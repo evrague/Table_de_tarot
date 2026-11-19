@@ -16,7 +16,7 @@ const cardsOf = list => list.map(id => CARD[id]);
 const Save = {
   /* leader >= 0 : sauvegarde au début d'un pli ; sinon entre deux donnes */
   store(leader) {
-    if (!G || G.remote || G.online) return;          // une partie en ligne ne se reprend pas seule
+    if (!G || G.remote || G.online || G.tutorial) return;          // une partie en ligne ne se reprend pas seule
     const snap = {
       v: 1, savedAt: Date.now(),
       meta: { n: G.n, humans: G.humans, isHuman: G.isHuman, names: G.names, avatars: G.avatars, level: G.level },

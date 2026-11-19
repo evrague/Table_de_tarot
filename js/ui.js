@@ -92,6 +92,7 @@ function handSVG(skin, sleeve, layer) {
 
 function fanHTML(s, hand, W, opts = {}) {
   const L = opts.legal, me = opts.me;
+  const hints = me ? Tutor.suggest() : [];
   const F = fanLayout(hand.length, W);
   const av = AVATARS[G.avatars[s]];
   const gripTop = Math.round(F.cardBottom - 40);
@@ -102,6 +103,7 @@ function fanHTML(s, hand, W, opts = {}) {
     else if (L) cls = L.has(c.id) ? 'playable' : 'dim';
     else if (me && pending.type === 'discard') { cls = ecartAllowed(c) ? 'playable' : 'dim'; if (G.sel.has(c.id)) cls += ' sel'; }
     if (!opts.backs && G.newIds.has(c.id)) cls += ' new';
+    if (!opts.backs && hints.includes(c.id) && cls.includes('playable')) cls += ' hint';
     if (G.raised === c.id && L) cls += ' raised';
     const attrs = cls.includes('playable') ? `tabindex="0" role="button" data-act="pick" data-seat="${s}"` : '';
     const a = F.angles[i].toFixed(2);
@@ -148,8 +150,9 @@ function renderPanel(el, s, no) {
 
   h += '<div class="actions">';
   if (me && pending.type === 'bid') {
-    h += '<div class="bids"><button class="btn" data-act="bid" data-v="0">Passe</button>';
-    for (let k = G.best + 1; k <= 4; k++) h += `<button class="btn" data-act="bid" data-v="${k}">${CONTRACTS[k].name}</button>`;
+    const tut = G.tutorial;                          // didacticiel : seule la Garde est proposée
+    h += `<div class="bids"><button class="btn" data-act="bid" data-v="0" ${tut ? 'disabled' : ''}>Passe</button>`;
+    for (let k = G.best + 1; k <= 4; k++) h += `<button class="btn ${tut && k === 2 ? 'primary hint-btn' : ''}" data-act="bid" data-v="${k}" ${tut && k !== 2 ? 'disabled' : ''}>${CONTRACTS[k].name}</button>`;
     h += '</div><p class="note">Petite ×1 · Garde ×2 · Garde sans ×4 · Garde contre ×6</p>';
   }
   if (me && pending.type === 'poignee') {
@@ -232,16 +235,18 @@ function renderCenter() {
       <div class="tools">
         <label class="musicsel"><span aria-hidden="true">♪</span><select id="musicGame" class="sel" aria-label="Musique">${[...Music.list(), { id: 'off', label: 'Sans musique' }].map(t => `<option value="${t.id}">${t.id === 'off' ? 'Muet' : t.label.replace('Classique : ', '')}</option>`).join('')}</select></label>
         <button class="btn ghost" data-act="speed" id="speedBtn"></button>
+        <button class="btn ghost" data-act="coach" id="coachBtn" aria-pressed="false">Conseils</button>
         <button class="btn ghost" data-act="stats">Statistiques</button>
         <button class="btn ghost" data-act="newgame" id="newgameBtn">Nouvelle partie</button></div></div><div class="center-body" id="centerBody"></div>`;
   }
   $('#contractInfo').innerHTML = `<span class="eyebrow">Donne ${G.dealNo} · IA ${LEVELS[G.level].toLowerCase()}</span><br>${c}`;
   $('#speedBtn').textContent = FAST ? 'Rapide' : 'Normal';
-  $('#speedBtn').hidden = G.online === 'guest';                         // l'hôte règle la vitesse
+  $('#speedBtn').hidden = G.online === 'guest';
+  $('#coachBtn').setAttribute('aria-pressed', G.coach ? 'true' : 'false');                         // l'hôte règle la vitesse
   $('#newgameBtn').textContent = G.online || G.remote ? 'Quitter la table' : 'Nouvelle partie';
   const ms = $('#musicGame');
   if (document.activeElement !== ms) ms.value = Music.on ? Music.track : 'off';
-  let h = '';
+  let h = Tutor.coachHTML();                         // Gaston, le professeur (didacticiel ou bouton Conseils)
 
   // lumière : faisceau de la lampe qui balance, poussière dans le faisceau, flaque de lumière sur le tapis
   // lumière : deux chandeliers posés sur la table, flaques de lumière chaude qui vacillent sur le tapis

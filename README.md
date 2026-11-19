@@ -30,6 +30,7 @@ assets/music.js     les mêmes en base64, chargées par le jeu (fonctionne aussi
 tools/compose_music.py   partition et mixage du thème western
 tools/compose_pieces.py  Bach, Pachelbel, pop, et assemblage de music.js
 js/anim.js          animations 3D de la main en éventail, parallaxe du tapis
+js/tutor.js         didacticiel : leçon illustrée, donne guidée, conseils de Gaston
 js/save.js          sauvegarde de la partie et statistiques (localStorage, sur l'appareil)
 js/online.js        parties en ligne : table par code, hôte qui fait tourner la partie, invités
 js/pwa.js           installation comme application (bouton Installer, aide iPhone)
@@ -43,6 +44,12 @@ test/simulate.mjs   vérification automatique des règles
 ```
 
 Les scripts sont des scripts classiques chargés dans l'ordre (pas de modules ES) : le jeu fonctionne aussi en ouvrant le fichier directement, sans serveur.
+
+## Didacticiel
+
+- À l'accueil, **« Apprendre à jouer »** ouvre une leçon illustrée en 7 étapes : les cartes, les bouts, le compte des points, les enchères, le chien et l'écart, le jeu de la carte, le score (flèches du clavier ou boutons ; Échap pour fermer).
+- **Donne guidée** : à la fin de la leçon, une donne à 4 joueurs avec une main préparée. Gaston, le professeur, explique chaque étape au-dessus du tapis : la carte qu'il conseille brille et se soulève, il justifie qui remporte chaque pli et détaille le calcul du score. Elle n'est ni sauvegardée ni comptée dans les statistiques.
+- En partie normale, le bouton **« Conseils »** en haut du tapis active ou coupe ces commentaires à tout moment.
 
 ## Écran
 

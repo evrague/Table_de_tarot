@@ -19,6 +19,7 @@ function answer(v) {
 }
 
 function deal() {
+  if (G.tutorial) { Tutor.guidedDeal(); return; }      // didacticiel : main préparée
   for (;;) {
     const d = shuffle(makeDeck()); const cs = G.n === 5 ? 3 : 6; const hs = (78 - cs) / G.n;
     G.chienSize = cs; G.chien = d.slice(0, cs); G.hands = [];
@@ -62,7 +63,7 @@ async function playDeal(tok) {
   for (let i = 0; i < n; i++) {
     const p = (G.dealer + 1 + i) % n; G.turn = p; render();
     let b;
-    if (G.isHuman[p]) b = await ask(p, 'bid', tok); else { await wait(750, tok); b = aiBid(p); }
+    if (G.isHuman[p]) b = await ask(p, 'bid', tok); else { await wait(750, tok); b = G.tutorial ? 0 : aiBid(p); }   // didacticiel : les autres passent
     G.bids[p] = b; if (b > G.best) { G.best = b; G.taker = p; }
     G.say[p] = b ? BIDN[b] + ' !' : 'Passe';
     log(`${G.names[p]} : ${BIDN[b]}.`); render();
@@ -108,7 +109,7 @@ async function playDeal(tok) {
   G.chienCards = null;
   G.hands0len = G.hands[t].length;
   let chel;
-  if (G.isHuman[t]) chel = await ask(t, 'chelem', tok); else chel = aiChelem(t);
+  if (G.tutorial) chel = false; else if (G.isHuman[t]) chel = await ask(t, 'chelem', tok); else chel = aiChelem(t);
   if (chel) { G.chelem = true; G.say = { [t]: 'Chelem !' }; log(`${G.names[t]} annonce le chelem : il doit remporter tous les plis.`); render(); await wait(1400, tok); }
 
   /* Jeu de la carte */
@@ -136,7 +137,7 @@ async function playTricks(tok, from, leader) {
     if (k === nT - 1 && lead.c.s === 'E' && isAtt(lead.p) && G.attTricks === k) w = lead.p;
     if (isAtt(w)) G.attTricks++;
     G.winFlash = w; G.turn = -1; render();
-    await wait(1000, tok);
+    await wait(G.coach ? 2400 : 1000, tok);           // avec les conseils, le temps de lire l'explication du pli
     G.gather = w; render();               // le pli vole vers le gagnant
     await wait(520, tok);
     collect(w, k === nT - 1); leader = w; G.gather = -1;
@@ -159,8 +160,9 @@ async function offerPoignee(tok, p) {
 
 async function endDeal(tok) {
   G.trick = []; G.turn = -1;
-  score(); Stats.afterDeal(); G.phase = 'score'; G.say = {};
+  score(); if (!G.tutorial) Stats.afterDeal(); G.phase = 'score'; G.say = {};
   await ask(-1, 'next', tok);
+  if (G.tutorial) await Tutor.finish(tok);
   G.dealer = (G.dealer + 1) % G.n;
 }
 
